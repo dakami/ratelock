@@ -38,7 +38,7 @@ def add_user(name, password):
    except:
       raise
 
-   iam.create_user(UserName=name, Path="/dan_demo_walliam/")
+   iam.create_user(UserName=name, Path="/balliam/")
    user = boto3.resource('iam').User(name)
    keypair = user.create_access_key_pair()
    raw_secret = base64.b64decode(keypair.secret)

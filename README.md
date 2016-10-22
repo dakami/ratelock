@@ -5,10 +5,15 @@ Rate Limiting using Cloud Resources
 Use Amazon's zealous protection of their IAM Secret Keys to protect your
 password hashes.
 
-# Important Caveat
-Right now, this requires an account with the role "IAMFullAccess"
-(you're creating accounts).  Obviously I'm working on better, but
-it's definitely wise to run this out of a separate Amazon account.
+# Security Note
+The calling account *does not* require arbitrary access to Amazon via
+IAMFullAccess.  Access is constrained to an ARN Path, prefixed with
+"walliam", and then only allows a handful of operations.  Importantly,
+none of these operations allow attaching roles or policies.  See
+iam.json for details.
+
+That being said, someone could probably make you hit some IAM limits,
+which as in all Rate Limiting approaches is the risk you accept.
 
 # Quick Demo
 
