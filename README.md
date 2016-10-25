@@ -40,8 +40,8 @@ which as in all Rate Limiting approaches is the risk you accept.
    resources hosted in Dynamo.  Demonstrate "triggers" such as a Twilio ping
    at one rate and an actual block at another.
 2. Create simple Google Cloud demo, leveraging code hiding guarantee here:
-   ![Prohibit Code Downloads](https://i.imgur.com/HwFdhhg.png "")
-   Can we make a function that stores its own data, and updates itself?
+   1. ![Prohibit Code Downloads](https://i.imgur.com/HwFdhhg.png "")
+   2. Can we make a function that stores its own data, and updates itself?
    Note the tricky part of using even an external store is replay attacks.
    This is going to mirror some elements of coding to Intel SGX.
 3. Automate the peskier aspects of keeping this safe, like deep separation
