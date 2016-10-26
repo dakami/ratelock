@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import boto3   
 from boto3.dynamodb.conditions import Key, Attr
 import sys
@@ -82,6 +83,7 @@ class AuthDB(object):
     
     def add(self, username, password):
        if not self.table: self.start()
+       print username, password
        try:
            self.table.update_item(Key={'username':username},
                             UpdateExpression="SET password = :password",                   
@@ -113,3 +115,9 @@ if __name__ == "__main__":
    if verb == "add":   print db.add(username, password)
    if verb == "check": print db.check(username, password)
    if verb == "dump":  print "just because I don't exist, doesn't mean I don't have the permissions to"
+
+def handler(event, context):
+    verb, username, password = (event.get('verb'), event.get('username'), event.get('password'))
+    db = AuthDB("authdb")
+    if verb == "add":   return db.add(username, password)
+    if verb == "check": return db.check(username, password)
