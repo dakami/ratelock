@@ -6,6 +6,6 @@ wget -c https://releases.hashicorp.com/packer/0.11.0/packer_0.11.0_linux_amd64.z
 unzip -qu packer_0.11.0_linux_amd64.zip
 wget -c https://releases.hashicorp.com/terraform/0.7.7/terraform_0.7.7_linux_amd64.zip
 unzip -qu terraform_0.7.7_linux_amd64.zip
-zip dynamo_local.zip dynamo_local.py
+./build_deployment.sh # creates zip file
 ./terraform apply
 
