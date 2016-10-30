@@ -32,12 +32,20 @@ resource "aws_iam_role" "iam_for_lambda" {
     name = "iam_for_lambda"
     assume_role_policy = <<EOF
 {
-  "Version": "2016-10-26",
+  "Version": "2012-10-17",
   "Statement": [
     {
       "Action": "sts:AssumeRole",
       "Principal": {
         "Service": "lambda.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    },
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "dynamodb.amazonaws.com"
       },
       "Effect": "Allow",
       "Sid": ""
@@ -57,10 +65,10 @@ EOF
 # https://github.com/hashicorp/terraform/issues/8344
 # 
 resource "aws_lambda_function" "ratelimit_lambda" {
-    filename = "dynamo_local_py.zip"
+    filename = "dynamo_local.zip"
     function_name = "ratelimit"
     role = "${aws_iam_role.iam_for_lambda.arn}"
-    handler = "ratelimit.handler"
+    handler = "dynamo_local.handler"
     runtime = "python2.7" 
     source_code_hash = "${base64sha256(file("dynamo_local.zip"))}"
 }
@@ -83,8 +91,46 @@ resource "aws_dynamodb_table" "basic-dynamodb-table" {
       name = "username"
       type = "S"
     }
-    attribute {
-      name = "password"
-      type = "S"
-    }
+# You do not need to specify non-key attributes when creating a DynamoDB table. DynamoDB does not have a fixed schema. Instead, each data item may have a different number of attributes (aside from the mandatory key attributes).
+#    attribute {
+#      name = "password"
+#      type = "S"
+#    }
+}
+
+
+# AWS API Gateway Setup
+
+resource "aws_lambda_permission" "allow_api_gateway" {
+    function_name = "${aws_lambda_function.ratelimit_lambda.function_name}"
+    statement_id = "AllowExecutionFromApiGateway"
+    action = "lambda:InvokeFunction"
+    principal = "apigateway.amazonaws.com"
+}
+
+resource "aws_api_gateway_rest_api" "ratelimit_api" {
+  name = "RateLimitAPI"
+  description = "This is the RateLimit API"
+}
+
+resource "aws_api_gateway_resource" "ratelimit" {
+  rest_api_id = "${aws_api_gateway_rest_api.ratelimit_api.id}"
+  parent_id = "${aws_api_gateway_rest_api.ratelimit_api.root_resource_id}"
+  path_part = "ratelimit"
+}
+
+resource "aws_api_gateway_method" "ratelimit-get" {
+  rest_api_id = "${aws_api_gateway_rest_api.ratelimit_api.id}"
+  resource_id = "${aws_api_gateway_resource.ratelimit.id}"
+  http_method = "GET"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "ratelimit-get-integration" {
+  rest_api_id = "${aws_api_gateway_rest_api.ratelimit_api.id}"
+  resource_id = "${aws_api_gateway_resource.ratelimit.id}"
+  http_method = "${aws_api_gateway_method.ratelimit-get.http_method}"
+  type = "AWS"
+  uri = "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:561759691730:function:ratelimit/invocations"
+  integration_http_method = "${aws_api_gateway_method.ratelimit-get.http_method}"
 }
