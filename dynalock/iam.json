@@ -1,0 +1,40 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "iam:CreateUser*",
+            "Resource": "arn:aws:iam::*:user/dynalock/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iam:CreateAccessKeyPair*",
+            "Resource": "arn:aws:iam::*:user/dynalock/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iam:DeleteUser*",
+            "Resource": "arn:aws:iam::*:user/dynalock/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iam:DeleteAccessKey*",
+            "Resource": "arn:aws:iam::*:user/dynalock/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iam:GetUser*",
+            "Resource": "arn:aws:iam::*:user/dynalock/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iam:ListAccessKeys*",
+            "Resource": "arn:aws:iam::*:user/dynalock/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "dynamodb:*",
+            "Resource": "arn:aws:dynamodb::*:table/authdb2/*"
+        }
+    ]
+}
