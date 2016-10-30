@@ -1,7 +1,7 @@
 #!/bin/bash
 apt-get -y install virtualenv python-pip
 
-ORIG=`pwd`
+ORIG=`pwd`/../
 rm -rf build
 virtualenv build
 cd build
