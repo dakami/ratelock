@@ -65,12 +65,12 @@ EOF
 # https://github.com/hashicorp/terraform/issues/8344
 # 
 resource "aws_lambda_function" "ratelimit_lambda" {
-    filename = "dynamo_local.zip"
+    filename = "ratelock.zip"
     function_name = "ratelimit"
     role = "${aws_iam_role.iam_for_lambda.arn}"
-    handler = "dynamo_local.handler"
+    handler = "ratelock.handler"
     runtime = "python2.7" 
-    source_code_hash = "${base64sha256(file("dynamo_local.zip"))}"
+    source_code_hash = "${base64sha256(file("ratelock.zip"))}"
 }
 
 

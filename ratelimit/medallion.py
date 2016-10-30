@@ -92,32 +92,23 @@ opts = None
 remainder = None
     
 if __name__ == "__main__":
-   usage = """Medallion:  Ratelocking Data Loss with Serverless Cloud Enforcement
+   usage = """Medallion 0.1:  Ratelocking Data Loss with Serverless Cloud Enforcement
 Dan Kaminsky, Chief Scientist, whiteops.com
 With:  Andy McMurray, getmedal.com
        Mark Shlimovich
 Usage:
-            ./dynamo_local.py [options] [add|check] username password
+            ./medallion.py [options] [add|check] username password
 Example:
-            ./dynamo_local.py add foo bar # set foo's password to bar
-            true
-            ./dynamo_local.py check foo bar
-            true
-            ./dynamo_local.py check foo wrong
-            false           
+            ./medallion.py add foo bar # prints true
+            ./medallion.py check foo bar # prints true
+            ./medallion.py check foo wrong # prints false           
 
-            # while [ 1 ]; do ./dynamo_local.py check foo bar; sleep 0.25; done                                                      
-            true
-            true
-            true
-            true
-            false
-            false
-            false            
+            # while [ 1 ]; do ./medallion.py check foo bar; sleep 0.25; done                                                      
+            true ... true ... true ... true ... false ... false ... false
 """
    parser = optparse.OptionParser(usage=usage)
    parser.add_option("-l", "--local", dest="local", default=False, action="store_true", help="Access DB locally")
-   parser.add_option("-g", "--region", dest="region", default="us-east-1", help="AWS Region")
+   parser.add_option("-g", "--region", dest="region", default="us-east-1", help="AWS Region (us-east-1)")
    opts, remainder = parser.parse_args(sys.argv)
    if len(remainder)<3:
        print parser.get_usage()
