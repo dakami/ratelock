@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 # -*- coding: utf-8 -*-
 import boto3   
 from boto3.dynamodb.conditions import Key, Attr
