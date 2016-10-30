@@ -8,3 +8,4 @@ wget -c https://releases.hashicorp.com/terraform/0.7.7/terraform_0.7.7_linux_amd
 unzip -qu terraform_0.7.7_linux_amd64.zip
 zip dynamo_local.zip dynamo_local.py
 ./terraform apply
+
