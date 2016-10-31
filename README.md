@@ -76,3 +76,8 @@ we're locking sloppily).
 5. Support other clouds, particularly Google App Engine, because this is
 *amazing*:
    1. ![Prohibit Code Downloads](https://i.imgur.com/HwFdhhg.png "")
+6. I'm using DQL, which is an actual sane interface to DynamoDB (or at least
+an aggressively less opinionated one) but that does seem to want to be
+injected into.  *I'm* handling this with highly destructive validation but
+I'm sure others won't.  So, either fix DQL, or fix my use of DynamoDB, or
+don't use DynamoDB.
